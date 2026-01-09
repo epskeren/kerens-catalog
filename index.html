@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>קטלוג תוצרים ופרויקטים</title>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Font: Heebo -->
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: #f8fafc;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // --- אזור עריכה - הוספת קישורים כאן ---
+        const portfolioData = [
+            // אפליקציות וכלים
+            { title: "Pricewise - מחשבון תמחור פרויקטים", url: "https://price-wise-4a7ca6f6.base44.app", category: "אפליקציות וכלים" },
+            { title: "מדריך ארגונים ושירותים - בריאות הנפש", url: "https://mental-health-compass-israel.lovable.app/directory", category: "אפליקציות וכלים" },
+            { title: "צינורות ללמידה: מסע מהנה", url: "https://pipes.lovable.app", category: "אפליקציות וכלים" },
+            { title: "מרכז הכלים AI", url: "https://ai-pedagogy-boost.lovable.app", category: "אפליקציות וכלים" },
+            { title: "מחולל פרומפטים לסטיקרים", url: "https://nano-sticker-muse.lovable.app", category: "אפליקציות וכלים" },
+            { title: "מחולל פרומפטים לכלי AI", url: "https://prompt-wizard-openu.lovable.app", category: "אפליקציות וכלים" },
+            { title: "DBT לכולם", url: "https://dbt-for-all.lovable.app", category: "אפליקציות וכלים" },
+            { title: "DBT למשפחות", url: "https://dbt-guide-family.lovable.app", category: "אפליקציות וכלים" },
+            { title: "DBT לחינוך", url: "https://dbt-guide-education.lovable.app", category: "אפליקציות וכלים" },
+            { title: "DBT לארגונים", url: "https://dbt-guide-org.lovable.app", category: "אפליקציות וכלים" },
+            { title: "רדיו אינטרנט - Drive Radio", url: "https://drive-radio-israel.lovable.app", category: "אפליקציות וכלים" },
+            { title: "עוזר פגישות חכם ואוטומטי", url: "https://concur-summarizer.lovable.app", category: "אפליקציות וכלים" },
+            { title: "QR Code מחולל", url: "https://qr-generator-keren.lovable.app", category: "אפליקציות וכלים" },
+            { title: "תכנון לוח זמנים להרצאות וסדנאות", url: "https://timelydeck.lovable.app", category: "אפליקציות וכלים" },
+            { title: "עורך טקסט מתקדם לגניאלי", url: "https://genially-tooltip-wizard.lovable.app", category: "אפליקציות וכלים" },
+            { title: "מחולל צורות SVG מתקדם", url: "https://genially-svg-crafter.lovable.app", category: "אפליקציות וכלים" },
+            { title: "מאגר המידע וההרחבות Genially", url: "https://genially-extension-explorer.lovable.app", category: "אפליקציות וכלים" },
+            { title: "מובחרות בפינצטה שיכורות", url: "https://wine-weekend-vibes-app.lovable.app", category: "אפליקציות וכלים" },
+            { title: "שאלון אדיג'ס - כללי", url: "https://adizes.lovable.app", category: "אפליקציות וכלים" },
+            { title: "שאלון אדיג'ס - ניו ארא", url: "https://adizes-newera.lovable.app", category: "אפליקציות וכלים" },
+
+            // דפי נחיתה
+            { title: "מזיזים את המח\"ט - דף נחיתה", url: "https://mazi-landing-jobs-hub.lovable.app", category: "דפי נחיתה" },
+            { title: "צועדים בשביל ישראל (בשביל\"י)", url: "https://ort-shvil-israel.lovable.app", category: "דפי נחיתה" },
+            { title: "יום בחיי - נת\"ע", url: "https://nta-connect-circles.lovable.app", category: "דפי נחיתה" },
+
+            // Genially - הדרכות וכלים
+            { title: "שאלות ותשובות נפוצות בגניאלי", url: "https://view.genially.com/63906fedc2f68100193f4be8", category: "Genially" },
+            { title: "שאלות אינטראקטיביות בגניאלי", url: "https://view.genially.com/651444a99ae4a400111c429e", category: "Genially" },
+            { title: "חמישה טיפים לשימוש בגניאלי", url: "https://view.genially.com/64cf6e1aeba99b0011096cf5", category: "Genially" },
+            { title: "גופני גוגל בעברית לשימוש בגניאלי", url: "https://view.genially.com/6613c0b86124510014e90cf7", category: "Genially" },
+            { title: "VAR Code RTL בגניאלי", url: "https://view.genially.com/63e12eedd4c7e2001adb176c", category: "Genially" },
+            { title: "גלגל המזל - מתורגם לעברית", url: "https://view.genially.com/640c98bd89fdcd0018031d10", category: "Genially" },
+            { title: "עברית במחשבי מק בגניאלי", url: "https://view.genially.com/65c7b4caef2a8900158dca4a", category: "Genially" },
+            { title: "Design Tips for Non-Designers", url: "https://view.genially.com/63a80f5e2e044800139c85da", category: "Genially" },
+            { title: "How to use Genial.ly", url: "https://view.genially.com/63d7e78e95304b00184c148b", category: "Genially" },
+            { title: "Hebrew Fonts - גניאלי", url: "https://view.genially.com/63a80c9b31317e0018f95145", category: "Genially" },
+            { title: "זכוכית מגדלת גניאלי", url: "https://view.genially.com/67c3411717296826739b1570", category: "Genially" },
+            { title: "SVG Webinar גניאלי", url: "https://view.genially.com/635e3391e84e070019499fcb", category: "Genially" },
+            { title: "Images for Genially", url: "https://view.genially.com/63a813a559024a0018d08941", category: "Genially" },
+            { title: "הרחבת גרירה DND - גניאלי", url: "https://view.genially.com/63dd1d6e31480700197b58b6", category: "Genially" },
+            { title: "הרחבת VAR גניאלי", url: "https://view.genially.com/63e111607a01e40019145f3b", category: "Genially" },
+
+            // משחקים וחדרי בריחה
+            { title: "CoffeeTime Escape Room (En)", url: "https://view.genially.com/63ecb30d8c4bbf00183aa3f0", category: "משחקים וחדרי בריחה" },
+            { title: "CoffeeTime Escape Room (He)", url: "https://view.genially.com/625fc5f176933f0017d483cc", category: "משחקים וחדרי בריחה" },
+            { title: "זמן קפה - מסמך פתרונות", url: "https://view.genially.com/637671019892220018b867a9", category: "משחקים וחדרי בריחה" },
+            { title: "Coffee Time Game Instructions", url: "https://view.genially.com/64805e64ab29040019112d91", category: "משחקים וחדרי בריחה" },
+            { title: "BlackMail EscapeRoom", url: "https://view.genially.com/6284de667d8caf0010d04801", category: "משחקים וחדרי בריחה" },
+            { title: "BlackMail - Escape Room Answers", url: "https://view.genially.com/626bded945d8640017c27060", category: "משחקים וחדרי בריחה" },
+            { title: "Marie Curie - Escape Room", url: "https://view.genially.com/63827e5527b6b00019682021", category: "משחקים וחדרי בריחה" },
+            { title: "Marie Curie - Answers", url: "https://view.genially.com/651d55aac355df0010e03831", category: "משחקים וחדרי בריחה" },
+            { title: "Willy the Dreamer - Escape Room", url: "https://view.genially.com/63a8115131317e0018f95216", category: "משחקים וחדרי בריחה" },
+            { title: "Space Escape - Escape Room", url: "https://view.genially.com/63a81281783e690012014309", category: "משחקים וחדרי בריחה" },
+
+            // לומדות והדרכה
+            { title: "מומנטום ניו ארא 2026", url: "https://view.genially.com/69441bd12550409543646904", category: "לומדות והדרכה" },
+            { title: "לומדה Onboarding ERA", url: "https://view.genially.com/64a137b21ea4cc0011015699", category: "לומדות והדרכה" },
+            { title: "לומדה שב\"ס - ערכים ואתיקה", url: "https://view.genially.com/68ecdfc7d746491c605764ba", category: "לומדות והדרכה" },
+            { title: "לומדת אונבורדינג אור שלום", url: "https://view.genially.com/6838646148d5abda5d924ef8", category: "לומדות והדרכה" },
+            { title: "ארגונים גלובאליים בעין הסערה", url: "https://view.genially.com/6559d15ce9a87b0011a183aa", category: "לומדות והדרכה" },
+            { title: "הדרכת כלים קטנים גדולים", url: "https://view.genially.com/63d5692443216e0011fc9712", category: "לומדות והדרכה" },
+            { title: "נקודוTime", url: "https://view.genially.com/64e2ff7c00a7f10012034bc1", category: "לומדות והדרכה" },
+            { title: "נקודוTime קטלוג", url: "https://view.genially.com/65845007c00053001402c3a1", category: "לומדות והדרכה" },
+            { title: "דמות הבוגר - מיומנויות", url: "https://view.genially.com/67f67ddd5188614d7229725f", category: "לומדות והדרכה" },
+            { title: "למידה מעמיקה - טכנולוגיות למידה", url: "https://view.genially.com/62a985ed123b200011c2cb92", category: "לומדות והדרכה" },
+            { title: "רמת העצמאות הנדרשת מתלמיד", url: "https://view.genially.com/6310e4c5bb1d8c0012fd4b42", category: "לומדות והדרכה" },
+
+            // מרחבים פיזיטליים
+            { title: "Islands to Mainland - מרחב פיזיטלי", url: "https://view.genially.com/63a810fc4c57f90019880bb0", category: "מרחבים פיזיטליים" },
+            { title: "Social Enterprises Fair", url: "https://view.genially.com/63a8136def03330011023624", category: "מרחבים פיזיטליים" },
+            { title: "בשבילי הלמפ בגיל הרך", url: "https://view.genially.com/63a8133f783e69001201433f", category: "מרחבים פיזיטליים" },
+            { title: "זה הכל בשבילכם", url: "https://view.genially.com/63a810982e044800139c85da", category: "מרחבים פיזיטליים" }
+        ];
+
+        // קטגוריות לסינון
+        const categories = ["הכל", "אפליקציות וכלים", "Genially", "משחקים וחדרי בריחה", "לומדות והדרכה", "דפי נחיתה", "מרחבים פיזיטליים"];
+
+        // Icons Components
+        const IconBase = ({ children, className, ...props }) => (
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className={className} 
+                {...props}
+            >
+                {children}
+            </svg>
+        );
+
+        const Search = (props) => (
+            <IconBase {...props}>
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+            </IconBase>
+        );
+
+        const ExternalLink = (props) => (
+            <IconBase {...props}>
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" x2="21" y1="14" y2="3" />
+            </IconBase>
+        );
+
+        const Copy = (props) => (
+            <IconBase {...props}>
+                <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+            </IconBase>
+        );
+
+        const Check = (props) => (
+            <IconBase {...props}>
+                <polyline points="20 6 9 17 4 12" />
+            </IconBase>
+        );
+
+        const X = (props) => (
+            <IconBase {...props}>
+                <path d="M18 6 6 18" />
+                <path d="m6 6 18 18" />
+            </IconBase>
+        );
+
+        const { useState, useEffect } = React;
+
+        const App = () => {
+            const [selectedCategory, setSelectedCategory] = useState("הכל");
+            const [searchQuery, setSearchQuery] = useState("");
+            const [copiedIndex, setCopiedIndex] = useState(null);
+            
+            // סינון הנתונים
+            const filteredData = portfolioData.filter(item => {
+                const matchesCategory = selectedCategory === "הכל" || item.category === selectedCategory;
+                const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      item.category.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            const handleCopy = (url, index) => {
+                navigator.clipboard.writeText(url);
+                setCopiedIndex(index);
+                setTimeout(() => setCopiedIndex(null), 2000);
+            };
+
+            return (
+                <div className="min-h-screen pb-12">
+                    {/* Header Section */}
+                    <header className="bg-indigo-700 text-white shadow-lg sticky top-0 z-50">
+                        <div className="max-w-6xl mx-auto px-4 py-6">
+                            <h1 className="text-3xl font-bold text-center mb-2">קטלוג תוצרים ופרויקטים</h1>
+                            <p className="text-center text-indigo-100 text-sm md:text-base">מאגר דינמי של לומדות, כלים טכנולוגיים ומשאבי הדרכה</p>
+                        </div>
+                    </header>
+
+                    {/* Controls Section */}
+                    <div className="max-w-6xl mx-auto px-4 -mt-6">
+                        <div className="bg-white rounded-lg shadow-md p-4 md:p-6 mb-8">
+                            
+                            {/* Search */}
+                            <div className="relative mb-6">
+                                <div className="absolute right-3 top-3 text-gray-400 pointer-events-none">
+                                    <Search className="w-5 h-5" />
+                                </div>
+                                <input 
+                                    type="text" 
+                                    placeholder="חיפוש פרויקט, כלי או מילת מפתח..." 
+                                    className="w-full pr-10 pl-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                            </div>
+
+                            {/* Categories - Desktop */}
+                            <div className="hidden md:flex flex-wrap gap-2 justify-center">
+                                {categories.map(cat => (
+                                    <button
+                                        key={cat}
+                                        onClick={() => setSelectedCategory(cat)}
+                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 
+                                            ${selectedCategory === cat 
+                                                ? 'bg-indigo-600 text-white shadow-md transform scale-105' 
+                                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800'
+                                            }`}
+                                    >
+                                        {cat}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* Categories - Mobile Dropdown */}
+                            <div className="md:hidden">
+                                <label className="text-xs font-semibold text-gray-500 mb-1 block">סינון לפי קטגוריה:</label>
+                                <select 
+                                    value={selectedCategory}
+                                    onChange={(e) => setSelectedCategory(e.target.value)}
+                                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700"
+                                >
+                                    {categories.map(cat => (
+                                        <option key={cat} value={cat}>{cat}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Results Grid */}
+                    <main className="max-w-6xl mx-auto px-4">
+                        <div className="flex justify-between items-center mb-4 text-gray-500 text-sm">
+                            <span>מציג {filteredData.length} תוצאות</span>
+                            {(searchQuery || selectedCategory !== "הכל") && (
+                                <button 
+                                    onClick={() => {setSearchQuery(""); setSelectedCategory("הכל");}}
+                                    className="text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+                                >
+                                    <X className="w-3 h-3" />
+                                    נקה סינון
+                                </button>
+                            )}
+                        </div>
+
+                        {filteredData.length === 0 ? (
+                            <div className="text-center py-20 bg-white rounded-xl shadow-sm">
+                                <div className="text-gray-400 mb-4 flex justify-center"><Search className="w-12 h-12" /></div>
+                                <h3 className="text-xl font-medium text-gray-600">לא נמצאו תוצאות</h3>
+                                <p className="text-gray-400 mt-2">נסה לשנות את מילות החיפוש או הקטגוריה</p>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {filteredData.map((item, index) => (
+                                    <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 card-hover transition-all duration-300 flex flex-col justify-between h-full">
+                                        <div>
+                                            <div className="flex justify-between items-start mb-3">
+                                                <span className="inline-block px-2 py-1 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-md">
+                                                    {item.category}
+                                                </span>
+                                            </div>
+                                            <h3 className="text-lg font-bold text-gray-800 leading-tight mb-2 min-h-[3rem]">
+                                                {item.title}
+                                            </h3>
+                                        </div>
+                                        
+                                        <div className="mt-4 pt-4 border-t border-gray-50 flex gap-3">
+                                            <a 
+                                                href={item.url} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="flex-1 bg-indigo-600 text-white py-2 px-4 rounded-lg font-medium text-sm text-center hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 group"
+                                            >
+                                                פתח קישור
+                                                <ExternalLink className="w-4 h-4 group-hover:translate-x-[-2px] transition-transform" />
+                                            </a>
+                                            
+                                            <button 
+                                                onClick={() => handleCopy(item.url, index)}
+                                                className={`p-2 rounded-lg border transition-all duration-200 ${
+                                                    copiedIndex === index 
+                                                    ? 'bg-green-50 border-green-200 text-green-600' 
+                                                    : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+                                                }`}
+                                                title="העתק קישור"
+                                            >
+                                                {copiedIndex === index ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </main>
+                    
+                    <footer className="mt-12 text-center text-gray-400 text-sm pb-8">
+                        <p>© {new Date().getFullYear()} קטלוג תוצרים דיגיטליים</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
