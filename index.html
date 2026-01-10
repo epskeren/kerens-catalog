@@ -15,6 +15,21 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Tailwind Config for Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#DB0771',
+                        primaryDark: '#b0055b', // Darker shade for hover states
+                        primaryLight: '#fdf2f8', // Very light pink for backgrounds
+                    }
+                }
+            }
+        }
+    </script>
+    
     <!-- Custom Font: Heebo -->
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
 
@@ -24,8 +39,22 @@
             background-color: #f8fafc;
         }
         .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af; 
         }
     </style>
 </head>
@@ -33,7 +62,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // --- אזור עריכה - הוספת קישורים כאן ---
+        // --- נתונים ---
         const portfolioData = [
             // אפליקציות וכלים
             { title: "Pricewise - מחשבון תמחור פרויקטים", url: "https://price-wise-4a7ca6f6.base44.app", category: "אפליקציות וכלים" },
@@ -92,7 +121,6 @@
             { title: "Willy the Dreamer - Escape Room answers", url: "https://docs.google.com/document/d/1VoD6sMa5x06LGNmmsbzgFTLrmQpD9vNXJ3ri3CnsYGM/edit?usp=sharing", category: "משחקים וחדרי בריחה" },
             { title: "Space Escape - Escape Room", url: "https://view.genially.com/63a81281783e690012014309", category: "משחקים וחדרי בריחה" },
             { title: "Space Escape - Escape Room answers", url: "https://bit.ly/SpaceEscapeRoomAnswers", category: "משחקים וחדרי בריחה" },
-
 
             // לומדות והדרכה
             { title: "מומנטום ניו ארא 2026", url: "https://view.genially.com/69441bd12550409543646904", category: "לומדות והדרכה" },
@@ -195,26 +223,28 @@
             return (
                 <div className="min-h-screen pb-12">
                     {/* Header Section */}
-                    <header className="bg-indigo-700 text-white shadow-lg sticky top-0 z-50">
-                        <div className="max-w-6xl mx-auto px-4 py-6">
-                            <h1 className="text-3xl font-bold text-center mb-2">קטלוג תוצרים ופרויקטים</h1>
-                            <p className="text-center text-indigo-100 text-sm md:text-base">מאגר דינמי של לומדות, כלים טכנולוגיים ומשאבי הדרכה</p>
+                    {/* INCREASED padding-bottom (pb-12) to make room for the floating search bar */}
+                    <header className="bg-primary text-white shadow-lg relative pb-12">
+                        <div className="max-w-7xl mx-auto px-4 pt-6 pb-2">
+                            <h1 className="text-2xl md:text-3xl font-bold text-center mb-1">קטלוג תוצרים ופרויקטים</h1>
+                            <p className="text-center text-primaryLight text-opacity-90 text-xs md:text-sm">מאגר דינמי של לומדות, כלים טכנולוגיים ומשאבי הדרכה</p>
                         </div>
                     </header>
 
                     {/* Controls Section */}
-                    <div className="max-w-6xl mx-auto px-4 -mt-6">
-                        <div className="bg-white rounded-lg shadow-md p-4 md:p-6 mb-8">
+                    {/* Negative margin pulls it up, but header pb-12 ensures no text overlap */}
+                    <div className="max-w-7xl mx-auto px-4 -mt-8 relative z-10">
+                        <div className="bg-white rounded-lg shadow-md p-4 mb-6">
                             
                             {/* Search */}
-                            <div className="relative mb-6">
-                                <div className="absolute right-3 top-3 text-gray-400 pointer-events-none">
-                                    <Search className="w-5 h-5" />
+                            <div className="relative mb-3">
+                                <div className="absolute right-3 top-2.5 text-gray-400 pointer-events-none">
+                                    <Search className="w-4 h-4" />
                                 </div>
                                 <input 
                                     type="text" 
                                     placeholder="חיפוש פרויקט, כלי או מילת מפתח..." 
-                                    className="w-full pr-10 pl-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                    className="w-full pr-9 pl-4 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />
@@ -226,9 +256,9 @@
                                     <button
                                         key={cat}
                                         onClick={() => setSelectedCategory(cat)}
-                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 
+                                        className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 
                                             ${selectedCategory === cat 
-                                                ? 'bg-indigo-600 text-white shadow-md transform scale-105' 
+                                                ? 'bg-primary text-white shadow-sm' 
                                                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800'
                                             }`}
                                     >
@@ -243,7 +273,7 @@
                                 <select 
                                     value={selectedCategory}
                                     onChange={(e) => setSelectedCategory(e.target.value)}
-                                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700"
+                                    className="w-full p-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-700"
                                 >
                                     {categories.map(cat => (
                                         <option key={cat} value={cat}>{cat}</option>
@@ -254,13 +284,13 @@
                     </div>
 
                     {/* Results Grid */}
-                    <main className="max-w-6xl mx-auto px-4">
-                        <div className="flex justify-between items-center mb-4 text-gray-500 text-sm">
+                    <main className="max-w-[90%] mx-auto px-2">
+                        <div className="flex justify-between items-center mb-3 text-gray-500 text-xs md:text-sm">
                             <span>מציג {filteredData.length} תוצאות</span>
                             {(searchQuery || selectedCategory !== "הכל") && (
                                 <button 
                                     onClick={() => {setSearchQuery(""); setSelectedCategory("הכל");}}
-                                    className="text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+                                    className="text-primary hover:text-primaryDark flex items-center gap-1"
                                 >
                                     <X className="w-3 h-3" />
                                     נקה סינון
@@ -269,47 +299,51 @@
                         </div>
 
                         {filteredData.length === 0 ? (
-                            <div className="text-center py-20 bg-white rounded-xl shadow-sm">
-                                <div className="text-gray-400 mb-4 flex justify-center"><Search className="w-12 h-12" /></div>
-                                <h3 className="text-xl font-medium text-gray-600">לא נמצאו תוצאות</h3>
-                                <p className="text-gray-400 mt-2">נסה לשנות את מילות החיפוש או הקטגוריה</p>
+                            <div className="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-100">
+                                <div className="text-gray-400 mb-3 flex justify-center"><Search className="w-10 h-10" /></div>
+                                <h3 className="text-lg font-medium text-gray-600">לא נמצאו תוצאות</h3>
+                                <p className="text-gray-400 mt-1 text-sm">נסה לשנות את מילות החיפוש או הקטגוריה</p>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            // Grid: Increased density for desktop (xl:grid-cols-5)
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                                 {filteredData.map((item, index) => (
-                                    <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 card-hover transition-all duration-300 flex flex-col justify-between h-full">
+                                    // Card: Reduced padding
+                                    <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-100 p-3 card-hover transition-all duration-300 flex flex-col justify-between h-full">
                                         <div>
-                                            <div className="flex justify-between items-start mb-3">
-                                                <span className="inline-block px-2 py-1 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-md">
+                                            <div className="flex justify-between items-start mb-1.5">
+                                                <span className="inline-block px-2 py-0.5 bg-primaryLight text-primary text-[10px] md:text-xs font-bold rounded">
                                                     {item.category}
                                                 </span>
                                             </div>
-                                            <h3 className="text-lg font-bold text-gray-800 leading-tight mb-2 min-h-[3rem]">
+                                            {/* Compact Title */}
+                                            <h3 className="text-sm font-bold text-gray-800 leading-snug mb-1 min-h-[2rem]">
                                                 {item.title}
                                             </h3>
                                         </div>
                                         
-                                        <div className="mt-4 pt-4 border-t border-gray-50 flex gap-3">
+                                        {/* Ultra Compact Footer & Button */}
+                                        <div className="mt-2 pt-2 border-t border-gray-50 flex gap-2">
                                             <a 
                                                 href={item.url} 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
-                                                className="flex-1 bg-indigo-600 text-white py-2 px-4 rounded-lg font-medium text-sm text-center hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 group"
+                                                className="flex-1 bg-primary text-white py-1 px-2 rounded font-medium text-xs text-center hover:bg-primaryDark transition-colors flex items-center justify-center gap-1.5 group"
                                             >
-                                                פתח קישור
-                                                <ExternalLink className="w-4 h-4 group-hover:translate-x-[-2px] transition-transform" />
+                                                פתח
+                                                <ExternalLink className="w-3 h-3 group-hover:translate-x-[-2px] transition-transform" />
                                             </a>
                                             
                                             <button 
                                                 onClick={() => handleCopy(item.url, index)}
-                                                className={`p-2 rounded-lg border transition-all duration-200 ${
+                                                className={`p-1 rounded border transition-all duration-200 ${
                                                     copiedIndex === index 
                                                     ? 'bg-green-50 border-green-200 text-green-600' 
-                                                    : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+                                                    : 'bg-white border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600'
                                                 }`}
                                                 title="העתק קישור"
                                             >
-                                                {copiedIndex === index ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                                                {copiedIndex === index ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                                             </button>
                                         </div>
                                     </div>
@@ -318,7 +352,7 @@
                         )}
                     </main>
                     
-                    <footer className="mt-12 text-center text-gray-400 text-sm pb-8">
+                    <footer className="mt-8 text-center text-gray-400 text-xs pb-6">
                         <p>© {new Date().getFullYear()} קטלוג תוצרים דיגיטליים</p>
                     </footer>
                 </div>
